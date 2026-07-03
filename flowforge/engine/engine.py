@@ -18,19 +18,36 @@ class Engine:
             if steps > max_steps:
                 raise Exception("Max steps reached")
 
-            if current_node_id not in workflow.nodes:
-                raise Exception(f"Node not found: {current_node_id}")
-
             node = workflow.nodes[current_node_id]
 
             print(f"[ENGINE] Executing node: {current_node_id}")
 
             node.execute(context)
 
-            if current_node_id == "loop" and not context.get("loop_active"):
-                current_node_id = None
+            trace.add_step(current_node_id, context.data)
+
+            # 🔥 EDGE RESOLUTION (NOW SUPPORTS CONDITIONAL EDGES)
+            edge = workflow.edges.get(current_node_id)
+
+            if edge is None:
+                break
+
+            # 🔥 se edge for string → fluxo normal
+            if isinstance(edge, str):
+                current_node_id = edge
+
+            # 🔥 se edge for dict → decisão baseada em context
+            elif isinstance(edge, dict):
+                condition_key = edge.get("condition")
+                true_path = edge.get("true")
+                false_path = edge.get("false")
+
+                condition_value = context.get(condition_key)
+
+                current_node_id = true_path if condition_value else false_path
+
             else:
-                current_node_id = workflow.edges.get(current_node_id)
+                raise Exception(f"Invalid edge format: {edge}")
 
             steps += 1
 

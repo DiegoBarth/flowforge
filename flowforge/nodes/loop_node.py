@@ -12,7 +12,7 @@ class LoopNode(Node):
     def execute(self, context: Context) -> None:
 
         count = context.get("loop_count", 0)
-        should_continue = context.get(self.condition_key)
+        should_continue = context.get(self.condition_key, False)
 
         print(f"[LOOP] count={count} continue={should_continue}")
 

@@ -10,7 +10,7 @@ class Node(ABC):
     @abstractmethod
     def execute(self, context: Context) -> None:
         """
-        Node executa apenas side effects.
-        NÃO retorna fluxo.
+        Apenas side effects.
+        Não retorna fluxo.
         """
         pass

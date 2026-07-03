@@ -27,7 +27,13 @@
   ],
   "edges": {
     "start": "loop",
-    "loop": "work",
+
+    "loop": {
+      "condition": "loop_active",
+      "true": "work",
+      "false": null
+    },
+
     "work": "loop"
   }
 }

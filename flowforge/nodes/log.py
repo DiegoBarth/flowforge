@@ -1,5 +1,4 @@
 from flowforge.nodes.base import Node
-from flowforge.context import Context
 
 
 class LogNode(Node):
@@ -8,5 +7,5 @@ class LogNode(Node):
         super().__init__(node_id)
         self.message = message
 
-    def execute(self, context: Context) -> None:
+    def execute(self, context) -> None:
         print(f"[LOG] {self.message}")
