@@ -21,18 +21,17 @@ class Engine:
                 if frm != current_node_id:
                     continue
 
+                # edge sem condição = fallback
                 if condition is None:
                     next_node = to
                     break
 
-                condition_result = context.get(condition)
-
-                if condition_result is True:
+                # edge com regra
+                if condition(context):
                     next_node = to
                     break
 
             current_node_id = next_node
 
         print("[ENGINE] Workflow finished")
-
         return context
