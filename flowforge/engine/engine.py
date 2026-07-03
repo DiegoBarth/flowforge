@@ -10,7 +10,6 @@ class Engine:
         trace = ExecutionTrace()
 
         current_node_id = workflow.start_node
-
         steps = 0
         max_steps = 1000
 
@@ -18,6 +17,9 @@ class Engine:
 
             if steps > max_steps:
                 raise Exception("Max steps reached")
+
+            if current_node_id not in workflow.nodes:
+                raise Exception(f"Node not found: {current_node_id}")
 
             node = workflow.nodes[current_node_id]
 
@@ -27,7 +29,7 @@ class Engine:
 
             trace.add_step(current_node_id, context.data)
 
-            if current_node_id == "end":
+            if not next_node:
                 break
 
             current_node_id = next_node

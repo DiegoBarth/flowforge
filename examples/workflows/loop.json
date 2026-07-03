@@ -5,14 +5,14 @@
     {
       "id": "start",
       "type": "log",
-      "config": {
+      "params": {
         "message": "Start"
       }
     },
     {
       "id": "loop",
       "type": "loop",
-      "config": {
+      "params": {
         "condition_key": "do_loop",
         "max_loops": 3
       }
@@ -20,22 +20,14 @@
     {
       "id": "work",
       "type": "log",
-      "config": {
-        "message": "Doing work inside loop"
-      }
-    },
-    {
-      "id": "end",
-      "type": "log",
-      "config": {
-        "message": "End"
+      "params": {
+        "message": "Doing work"
       }
     }
   ],
   "edges": {
     "start": "loop",
     "loop": "work",
-    "work": "loop",
-    "loop_end": "end"
+    "work": "loop"
   }
 }
