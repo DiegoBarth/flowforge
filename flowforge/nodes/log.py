@@ -9,4 +9,8 @@ class LogNode(Node):
 
     def execute(self, context: Context) -> Context:
         print(f"[LOG] {self.message}")
+
+        if self.node_id in ["start", "work"]:
+            context.set("next", "loop")
+
         return context

@@ -9,7 +9,7 @@ Condition = Callable[[Context], bool]
 
 @dataclass
 class Workflow:
-    name: str
-    nodes: dict[str, Node]
-    edges: list[tuple[str, str, Condition | None]]
-    start_node: str
+    def __init__(self, name: str, nodes: dict, start_node: str):
+        self.name = name
+        self.nodes = nodes
+        self.start_node = start_node

@@ -3,37 +3,36 @@ from flowforge.context import Context
 
 
 class Engine:
-    def run(self, workflow: Workflow, context: Context):
+    def run(self, workflow, context):
         print(f"[ENGINE] Running workflow: {workflow.name}")
 
-        current_nodes = [workflow.start_node]
-        visited = set()
+        current_node_id = workflow.start_node
+        steps = 0
+        max_steps = 1000
 
-        while current_nodes:
-            next_nodes = []
+        while current_node_id:
 
-            for current_node_id in current_nodes:
+            if steps > max_steps:
+                raise Exception("Max steps reached")
 
-                # 🔥 proteção contra execução duplicada
-                if current_node_id in visited:
-                    continue
+            node = workflow.nodes[current_node_id]
 
-                visited.add(current_node_id)
+            print(f"[ENGINE] Executing node: {current_node_id}")
 
-                node = workflow.nodes[current_node_id]
+            context = node.execute(context)
 
-                print(f"[ENGINE] Executing node: {current_node_id}")
+            next_node = context.get("next")
 
-                context = node.execute(context)
+            context.set("next", None)
 
-                for frm, to, condition in workflow.edges:
-                    if frm != current_node_id:
-                        continue
+            if current_node_id == "end":
+                break
 
-                    if condition is None or condition(context):
-                        next_nodes.append(to)
+            if not next_node:
+                break
 
-            current_nodes = next_nodes
+            current_node_id = next_node
+            steps += 1
 
         print("[ENGINE] Workflow finished")
         return context
