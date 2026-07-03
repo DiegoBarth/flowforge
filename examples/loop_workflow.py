@@ -9,16 +9,16 @@ workflow = Workflow(
     name="Loop Workflow",
     nodes={
         "start": LogNode("start", "Start"),
-        "loop": LoopNode("loop", "do_loop", max_loops=3),
+        "loop": LoopNode("loop", "do_loop"),
         "work": LogNode("work", "Doing work inside loop"),
         "end": LogNode("end", "End"),
     },
-    start_node="start"
+    start_node="start",
 )
 
 engine = Engine()
-context = Context()
 
+context = Context()
 context.set("do_loop", True)
 
 engine.run(workflow, context)

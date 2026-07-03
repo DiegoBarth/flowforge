@@ -1,12 +1,16 @@
-from flowforge.workflow import Workflow
-from flowforge.context import Context
+from flowforge.engine.execution_trace import ExecutionTrace
 
 
 class Engine:
+
     def run(self, workflow, context):
+
         print(f"[ENGINE] Running workflow: {workflow.name}")
 
+        trace = ExecutionTrace()
+
         current_node_id = workflow.start_node
+
         steps = 0
         max_steps = 1000
 
@@ -19,20 +23,18 @@ class Engine:
 
             print(f"[ENGINE] Executing node: {current_node_id}")
 
-            context = node.execute(context)
+            next_node = node.execute(context)
 
-            next_node = context.get("next")
-
-            context.set("next", None)
+            trace.add_step(current_node_id, context.data)
 
             if current_node_id == "end":
-                break
-
-            if not next_node:
                 break
 
             current_node_id = next_node
             steps += 1
 
+        trace.print()
+
         print("[ENGINE] Workflow finished")
+
         return context

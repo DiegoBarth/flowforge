@@ -3,22 +3,27 @@ from flowforge.context import Context
 
 
 class LoopNode(Node):
-    def __init__(self, node_id: str, condition_key: str, max_loops: int = 3):
+
+    def __init__(
+        self,
+        node_id: str,
+        condition_key: str,
+        max_loops: int = 2,
+    ):
         super().__init__(node_id)
         self.condition_key = condition_key
         self.max_loops = max_loops
 
-    def execute(self, context: Context) -> Context:
-        count = context.get(f"{self.node_id}_count", 0)
+    def execute(self, context: Context) -> str:
 
-        print(f"[LOOP] count={count} continue={count < self.max_loops}")
+        count = context.get("loop_count", 0)
+        should_continue = context.get(self.condition_key)
 
-        count += 1
-        context.set(f"{self.node_id}_count", count)
+        print(f"[LOOP] count={count} continue={should_continue}")
 
-        if count < self.max_loops:
-            context.set("next", "work")
-        else:
-            context.set("next", "end")
+        context.set("loop_count", count + 1)
 
-        return context
+        if should_continue and count < self.max_loops:
+            return "work"
+
+        return "end"

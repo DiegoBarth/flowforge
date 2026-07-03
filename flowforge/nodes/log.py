@@ -3,14 +3,19 @@ from flowforge.context import Context
 
 
 class LogNode(Node):
+
     def __init__(self, node_id: str, message: str):
         super().__init__(node_id)
         self.message = message
 
-    def execute(self, context: Context) -> Context:
+    def execute(self, context: Context) -> str | None:
+
         print(f"[LOG] {self.message}")
 
-        if self.node_id in ["start", "work"]:
-            context.set("next", "loop")
+        if self.node_id == "start":
+            return "loop"
 
-        return context
+        if self.node_id == "work":
+            return "loop"
+
+        return None

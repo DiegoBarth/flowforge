@@ -7,5 +7,8 @@ class Node(ABC):
         self.node_id = node_id
 
     @abstractmethod
-    def execute(self, context: Context) -> Context:
+    def execute(self, context: Context) -> str | None:
+        """
+        Executa o nó e retorna o próximo node_id.
+        """
         pass
