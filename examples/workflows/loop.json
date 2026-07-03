@@ -2,5 +2,10 @@
   "name": "Loop Workflow",
   "start_node": "start",
   "nodes": [],
-  "edges": {}
+  "edges": {
+    "start": "loop",
+    "loop": "work",
+    "work": "loop",
+    "loop_end": "end"
+  }
 }

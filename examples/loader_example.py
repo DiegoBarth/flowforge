@@ -2,7 +2,8 @@ from flowforge.workflow.loader import WorkflowLoader
 
 loader = WorkflowLoader()
 
-try:
-    loader.load("examples/workflows/loop.json")
-except NotImplementedError:
-    print("Workflow loader not implemented yet.")
+workflow = loader.load("examples/workflows/loop.json")
+
+print(workflow.name)
+print(workflow.start_node)
+print(workflow.edges)
