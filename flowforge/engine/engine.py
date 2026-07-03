@@ -26,25 +26,29 @@ class Engine:
 
             trace.add_step(current_node_id, context.data)
 
-            # 🔥 EDGE RESOLUTION (NOW SUPPORTS CONDITIONAL EDGES)
             edge = workflow.edges.get(current_node_id)
 
             if edge is None:
                 break
 
-            # 🔥 se edge for string → fluxo normal
             if isinstance(edge, str):
                 current_node_id = edge
 
-            # 🔥 se edge for dict → decisão baseada em context
-            elif isinstance(edge, dict):
+            elif isinstance(edge, dict) and edge.get("type") != "switch":
                 condition_key = edge.get("condition")
-                true_path = edge.get("true")
-                false_path = edge.get("false")
-
                 condition_value = context.get(condition_key)
 
-                current_node_id = true_path if condition_value else false_path
+                current_node_id = edge["true"] if condition_value else edge["false"]
+
+            elif isinstance(edge, dict) and edge.get("type") == "switch":
+
+                condition_key = edge.get("condition")
+                value = context.get(condition_key)
+
+                cases = edge.get("cases", {})
+                default = edge.get("default")
+
+                current_node_id = cases.get(value, default)
 
             else:
                 raise Exception(f"Invalid edge format: {edge}")

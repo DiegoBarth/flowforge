@@ -1,0 +1,60 @@
+{
+  "name": "Switch Workflow",
+  "start_node": "start",
+
+  "nodes": [
+    {
+      "id": "start",
+      "type": "log",
+      "params": {
+        "message": "Start workflow"
+      }
+    },
+
+    {
+      "id": "router",
+      "type": "log",
+      "params": {
+        "message": "Routing..."
+      }
+    },
+
+    {
+      "id": "success_node",
+      "type": "log",
+      "params": {
+        "message": "SUCCESS path"
+      }
+    },
+
+    {
+      "id": "error_node",
+      "type": "log",
+      "params": {
+        "message": "ERROR path"
+      }
+    },
+
+    {
+      "id": "fallback_node",
+      "type": "log",
+      "params": {
+        "message": "FALLBACK path"
+      }
+    }
+  ],
+
+  "edges": {
+    "start": "router",
+
+    "router": {
+      "type": "switch",
+      "condition": "status",
+      "cases": {
+        "success": "success_node",
+        "error": "error_node"
+      },
+      "default": "fallback_node"
+    }
+  }
+}
