@@ -5,4 +5,6 @@ from flowforge.nodes import Node
 @dataclass
 class Workflow:
     name: str
-    nodes: list[Node]
+    nodes: dict[str, Node]
+    edges: list[tuple[str, str]]
+    start_node: str
