@@ -6,5 +6,5 @@ from flowforge.nodes import Node
 class Workflow:
     name: str
     nodes: dict[str, Node]
-    edges: list[tuple[str, str]]
+    edges: list[tuple[str, str, str | None]]  # condition key
     start_node: str

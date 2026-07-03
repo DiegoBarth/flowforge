@@ -15,15 +15,24 @@ class Engine:
 
             context = node.execute(context)
 
-            # pega próximo node via edge
-            next_nodes = [
-                to for (frm, to) in workflow.edges if frm == current_node_id
-            ]
+            next_node = None
 
-            if not next_nodes:
-                break
+            for frm, to, condition in workflow.edges:
+                if frm != current_node_id:
+                    continue
 
-            current_node_id = next_nodes[0]
+                if condition is None:
+                    next_node = to
+                    break
+
+                condition_result = context.get(condition)
+
+                if condition_result is True:
+                    next_node = to
+                    break
+
+            current_node_id = next_node
 
         print("[ENGINE] Workflow finished")
+
         return context
