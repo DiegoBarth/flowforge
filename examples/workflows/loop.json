@@ -1,0 +1,6 @@
+{
+  "name": "Loop Workflow",
+  "start_node": "start",
+  "nodes": [],
+  "edges": {}
+}
