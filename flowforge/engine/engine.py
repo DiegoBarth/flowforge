@@ -6,32 +6,34 @@ class Engine:
     def run(self, workflow: Workflow, context: Context):
         print(f"[ENGINE] Running workflow: {workflow.name}")
 
-        current_node_id = workflow.start_node
+        current_nodes = [workflow.start_node]
+        visited = set()
 
-        while current_node_id:
-            node = workflow.nodes[current_node_id]
+        while current_nodes:
+            next_nodes = []
 
-            print(f"[ENGINE] Executing node: {current_node_id}")
+            for current_node_id in current_nodes:
 
-            context = node.execute(context)
-
-            next_node = None
-
-            for frm, to, condition in workflow.edges:
-                if frm != current_node_id:
+                # 🔥 proteção contra execução duplicada
+                if current_node_id in visited:
                     continue
 
-                # edge sem condição = fallback
-                if condition is None:
-                    next_node = to
-                    break
+                visited.add(current_node_id)
 
-                # edge com regra
-                if condition(context):
-                    next_node = to
-                    break
+                node = workflow.nodes[current_node_id]
 
-            current_node_id = next_node
+                print(f"[ENGINE] Executing node: {current_node_id}")
+
+                context = node.execute(context)
+
+                for frm, to, condition in workflow.edges:
+                    if frm != current_node_id:
+                        continue
+
+                    if condition is None or condition(context):
+                        next_nodes.append(to)
+
+            current_nodes = next_nodes
 
         print("[ENGINE] Workflow finished")
         return context
