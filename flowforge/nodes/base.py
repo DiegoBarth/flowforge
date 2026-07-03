@@ -3,12 +3,14 @@ from flowforge.context import Context
 
 
 class Node(ABC):
+
     def __init__(self, node_id: str):
         self.node_id = node_id
 
     @abstractmethod
-    def execute(self, context: Context) -> str | None:
+    def execute(self, context: Context) -> None:
         """
-        Executa o nó e retorna o próximo node_id.
+        Node executa apenas side effects.
+        NÃO retorna fluxo.
         """
         pass

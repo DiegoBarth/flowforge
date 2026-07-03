@@ -8,14 +8,5 @@ class LogNode(Node):
         super().__init__(node_id)
         self.message = message
 
-    def execute(self, context: Context) -> str | None:
-
+    def execute(self, context: Context) -> None:
         print(f"[LOG] {self.message}")
-
-        if self.node_id == "start":
-            return "loop"
-
-        if self.node_id == "work":
-            return "loop"
-
-        return None

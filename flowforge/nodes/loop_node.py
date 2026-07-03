@@ -9,7 +9,7 @@ class LoopNode(Node):
         self.condition_key = condition_key
         self.max_loops = max_loops
 
-    def execute(self, context: Context) -> str:
+    def execute(self, context: Context) -> None:
 
         count = context.get("loop_count", 0)
         should_continue = context.get(self.condition_key)
@@ -19,8 +19,4 @@ class LoopNode(Node):
         count += 1
         context.set("loop_count", count)
 
-        if should_continue and count < self.max_loops:
-            return "work"
-
-        # 🔥 CORREÇÃO PRINCIPAL
-        return None
+        context.set("loop_active", should_continue and count < self.max_loops)

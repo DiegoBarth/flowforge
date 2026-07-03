@@ -25,14 +25,13 @@ class Engine:
 
             print(f"[ENGINE] Executing node: {current_node_id}")
 
-            next_node = node.execute(context)
+            node.execute(context)
 
-            trace.add_step(current_node_id, context.data)
+            if current_node_id == "loop" and not context.get("loop_active"):
+                current_node_id = None
+            else:
+                current_node_id = workflow.edges.get(current_node_id)
 
-            if not next_node:
-                break
-
-            current_node_id = next_node
             steps += 1
 
         trace.print()
