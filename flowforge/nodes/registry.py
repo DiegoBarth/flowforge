@@ -4,23 +4,21 @@ from flowforge.nodes.base import Node
 
 
 class NodeRegistry:
+
     def __init__(self):
-        self._nodes: dict[str, Type[Node]] = {}
+        self._nodes = {}
 
-    def register(self, node_type: str, node_class: Type[Node]):
-        if node_type in self._nodes:
-            raise ValueError(f"Node '{node_type}' is already registered.")
-
+    def register(self, node_type: str, node_class):
         self._nodes[node_type] = node_class
 
-    def get(self, node_type: str) -> Type[Node]:
+    def create(self, node_type: str, node_id: str, config: dict) -> Node:
+
         if node_type not in self._nodes:
-            raise ValueError(f"Unknown node type: '{node_type}'")
+            raise ValueError(f"Unknown node type: {node_type}")
 
-        return self._nodes[node_type]
+        node_class = self._nodes[node_type]
 
-    def exists(self, node_type: str) -> bool:
-        return node_type in self._nodes
+        return node_class(node_id=node_id, **config)
 
-    def list(self) -> list[str]:
-        return sorted(self._nodes.keys())
+    def available_nodes(self):
+        return list(self._nodes.keys())

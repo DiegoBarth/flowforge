@@ -1,7 +1,37 @@
 {
   "name": "Loop Workflow",
   "start_node": "start",
-  "nodes": [],
+  "nodes": [
+    {
+      "id": "start",
+      "type": "log",
+      "config": {
+        "message": "Start"
+      }
+    },
+    {
+      "id": "loop",
+      "type": "loop",
+      "config": {
+        "condition_key": "do_loop",
+        "max_loops": 3
+      }
+    },
+    {
+      "id": "work",
+      "type": "log",
+      "config": {
+        "message": "Doing work inside loop"
+      }
+    },
+    {
+      "id": "end",
+      "type": "log",
+      "config": {
+        "message": "End"
+      }
+    }
+  ],
   "edges": {
     "start": "loop",
     "loop": "work",

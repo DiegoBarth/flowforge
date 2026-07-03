@@ -8,7 +8,7 @@ class LoopNode(Node):
         self,
         node_id: str,
         condition_key: str,
-        max_loops: int = 2,
+        max_loops: int = 3,
     ):
         super().__init__(node_id)
         self.condition_key = condition_key

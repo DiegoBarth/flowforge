@@ -7,7 +7,27 @@ registry = NodeRegistry()
 registry.register("log", LogNode)
 registry.register("loop", LoopNode)
 
-print(registry.list())
+print(registry.available_nodes())
 
-print(registry.get("log"))
-print(registry.get("loop"))
+log_node = registry.create(
+    node_type="log",
+    node_id="start",
+    config={
+        "message": "Hello FlowForge"
+    }
+)
+
+loop_node = registry.create(
+    node_type="loop",
+    node_id="loop",
+    config={
+        "condition_key": "do_loop",
+        "max_loops": 3
+    }
+)
+
+print(type(log_node))
+print(type(loop_node))
+
+print(log_node.message)
+print(loop_node.max_loops)
